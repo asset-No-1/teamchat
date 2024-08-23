@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+src/teamchat/__init__.py
+src/teamchat.egg-info/PKG-INFO
+src/teamchat.egg-info/SOURCES.txt
+src/teamchat.egg-info/dependency_links.txt
+src/teamchat.egg-info/requires.txt
+src/teamchat.egg-info/top_level.txt

@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: teamchat
+Version: 0.3.0
+Summary: Default template for PDM package
+Author-email: Nicou11 <lyoungin1204@gmail.com>
+License: MIT
+Requires-Python: ==3.8.*
+Description-Content-Type: text/markdown
+Requires-Dist: kafka-python>=2.0.2
+
+# teamchat
+
+## API 추출 기능 개발 중...
