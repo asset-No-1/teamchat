@@ -2,27 +2,22 @@ from kafka import KafkaProducer
 import time
 import json
 
-
-p = KafkaProducer(
+producer = KafkaProducer(
         bootstrap_servers=['localhost:9092'],
-        value_serializer=lambda x: json.dumps(x).encode('utf-8')
+        value_serializer=lambda v: json.dumps(v, ensure_ascii=False).encode('utf-8')
         
 
 )
 
-print("환영합니다!")
-print("영화제목을 입력해주세요!")
-
-
 while True:
-    msg = input("MovieName: ")
-    if msg == 'exit':
+    movie_title = input("MovieName: ")
+    if movie_title == 'exit':
         break
 
-    data = {'MovieName': msg}
-    p.send('movie', value=data)
+    data = {'MovieName': movie_title}
+    producer.send('movie', value=data)
 
-    p.flush()
+    producer.flush()
 
 print("챗봇 종료")
 
