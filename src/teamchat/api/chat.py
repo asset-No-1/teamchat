@@ -2,6 +2,8 @@ from kafka import KafkaProducer, KafkaConsumer
 from json import loads, dumps, dump
 import threading
 import json
+import os
+
 
 #THREAD_RUNNING = True
 
@@ -56,9 +58,15 @@ def cchat(chatroom, username):
         value_deserializer = lambda x: loads(x.decode('utf-8'))
     )
 
+    file_path = f"{chatroom}_messages.json"
+
+    if os.path.exists(file_path):
+        with open(file_path, "r", encoding="utf-8") as f:
+            messages = json.load(f)
+    else:
+        messages = []
 
     try:
-        messages = []
         for message in receiver:
             data = message.value
             messages.append(data)
@@ -70,9 +78,13 @@ def cchat(chatroom, username):
                     print("Type in 'exit' to also finish the chat.")
                     #print(f"{username}: ", end="")
 
-                else:
-                    break
+                #else:
+                    #break
                     #return
+                else:
+                    with open(file_path, "w", encoding="utf-8") as f:
+                        json.dump(messages, f, ensure_ascii=True, indent=4)
+                    return
 
             elif data['sender'] != username:
                 #print()
@@ -81,9 +93,7 @@ def cchat(chatroom, username):
 
 
 
-        # JSON 파일에 메시지 저장
-        chats[
-        with open(f"{chatroom}_messages.json", "w", encoding="utf-8") as f:
+        with open(file_path, "w", encoding="utf-8") as f:
             json.dump(messages, f, ensure_ascii=True, indent=4)
         print(f"All received messages are saved in {chatroom}_messages.json")
 
