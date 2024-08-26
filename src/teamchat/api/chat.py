@@ -17,6 +17,9 @@ def pchat(chatroom, username):
         #bootstrap_servers=['ec2-43-203-210-250.ap-northeast-2.compute.amazonaws.com:9092'],
         bootstrap_servers=['172.17.0.1:9092'],
         value_serializer=lambda x: dumps(x).encode('utf-8'),
+    sender = KafkaProducer(
+        bootstrap_servers = ['ec2-43-203-210-250.ap-northeast-2.compute.amazonaws.com:9092'],
+        value_serializer = lambda x: dumps(x).encode('utf-8'),
     )
 
     try:
@@ -56,6 +59,9 @@ def cchat(chatroom, username):
         bootstrap_servers=['172.17.0.1:9092'],
         enable_auto_commit=True,
         value_deserializer=lambda x: loads(x.decode('utf-8'))
+        bootstrap_servers = ['ec2-43-203-210-250.ap-northeast-2.compute.amazonaws.com:9092'],
+        enable_auto_commit = True,
+        value_deserializer = lambda x: loads(x.decode('utf-8'))
     )
 
     file_path = f"{chatroom}_messages.json"
@@ -99,6 +105,8 @@ username = input("Input Username: ")
 
 print()
 print(f"[INFO] Initializing chatroom [{chatroom}] for user [{username}]...")
+
+>>>>>>> 0746433 (dummy)
 print(f"[INFO] Initialize complete! Enjoy chatting!")
 print()
 
