@@ -27,10 +27,11 @@ def read_json():
 
 #Consumer 설정
 consumer = KafkaConsumer(
-        "movie",
+        "movies",
         bootstrap_servers=['localhost:9092'],
         value_deserializer=lambda x: loads(x.decode('utf-8')),
-        consumer_timeout_ms=5000,
+        consumer_timeout_ms=10000,
+        auto_offset_reset='earliest',
         group_id="movie_data",
         enable_auto_commit=False,
 )
@@ -69,4 +70,3 @@ except KeyboardInterrupt:
 
 finally:
     consumer.close()
-

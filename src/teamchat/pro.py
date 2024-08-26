@@ -15,7 +15,7 @@ while True:
         break
 
     data = {'MovieName': movie_title}
-    producer.send('movie', value=data)
+    producer.send('movies', value=data)
 
     producer.flush()
 
