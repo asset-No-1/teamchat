@@ -14,6 +14,7 @@ def create_data(username, message, end):
 # SENDER: 사용자 입력을 Kafka로 전송
 def pchat(stdscr, chatroom, username):
     producer = KafkaProducer(
+        #bootstrap_servers=['ec2-43-203-210-250.ap-northeast-2.compute.amazonaws.com:9092'],
         bootstrap_servers=['172.17.0.1:9092'],
         value_serializer=lambda x: dumps(x).encode('utf-8'),
     )
@@ -50,11 +51,11 @@ def pchat(stdscr, chatroom, username):
 
             if end:
                 stdscr.addstr(curses.LINES - 2, 0, "방을 나갑니다.")
-                #stdscr.refresh()
+                stdscr.refresh()
                 return
 
     except KeyboardInterrupt:
-        stdscr.addstr(curses.LINES - 2, 0, "Encountered keyboard interrupt. Finishing chat...")
+        stdscr.addstr(curses.LINES - 2, 0, "Encountered keyboard interrupt. 방을 나갑니다...")
         stdscr.refresh()
         return
 
@@ -62,6 +63,7 @@ def pchat(stdscr, chatroom, username):
 def cchat(stdscr, chatroom, username):
     consumer = KafkaConsumer(
         chatroom,
+        #bootstrap_servers=['ec2-43-203-210-250.ap-northeast-2.compute.amazonaws.com:9092'],
         bootstrap_servers=['172.17.0.1:9092'],
         enable_auto_commit=True,
         value_deserializer=lambda x: loads(x.decode('utf-8'))
@@ -89,18 +91,24 @@ def cchat(stdscr, chatroom, username):
                 if data['end']:
                     if data['sender'] != username:
                         message_win.addstr(f"{data['sender']}님이 방을 나갔습니다.\n")
-                        #message_win.addstr("Type in 'exit' to also finish the chat.\n")
                         message_win.refresh()
                     else:
                         with open(file_path, "w", encoding="utf-8") as f:
                             json.dump(messages, f, ensure_ascii=True, indent=4)
                         return
-                elif data['sender'] != username:
-                    message_win.addstr(f"{data['sender']}: {data['message']}\n")
+                    message_win.refresh()
+                else:
+                    if data['sender'] == username:
+                        # 현재 사용자의 메시지
+                        message_win.addstr(f"나: {data['message']}\n")
+                    else:
+                        # 다른 사용자의 메시지
+                        message_win.addstr(f"{data['sender']}: {data['message']}\n")
                     message_win.refresh()
 
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(messages, f, ensure_ascii=True, indent=4)
+
         message_win.addstr(f"All received messages are saved in {chatroom}_messages.json\n")
         message_win.refresh()
 
