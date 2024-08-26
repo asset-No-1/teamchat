@@ -32,7 +32,7 @@ def list2df(year=2022):
     return l
 
 def save_json(data, file_path):
-    data = list2df(year=2022)
+    data = list2df(year=year)
     home_path = os.path.expanduser("~")
     file_path = f"{home_path}/data/mov_data/year={year}/data.json"
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
