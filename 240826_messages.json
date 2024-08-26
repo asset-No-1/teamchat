@@ -1,0 +1,32 @@
+[
+    {
+        "sender": "new user2",
+        "message": "Hi",
+        "end": false
+    },
+    {
+        "sender": "new user2",
+        "message": "hello",
+        "end": false
+    },
+    {
+        "sender": "new user2",
+        "message": "join our room",
+        "end": false
+    },
+    {
+        "sender": "new user2",
+        "message": "\uc5b4\uc11c\uc624\uc138\uc694",
+        "end": false
+    },
+    {
+        "sender": "new user2",
+        "message": "\udce3exit",
+        "end": false
+    },
+    {
+        "sender": "new user2",
+        "message": "User [new user2] has exited the chatroom.",
+        "end": true
+    }
+]
