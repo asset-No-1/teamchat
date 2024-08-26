@@ -1,6 +1,5 @@
 import requests
 import os
-import pandas as pd
 import json
 
 def req(year='2022'):
@@ -40,11 +39,4 @@ def save_json(data, year='2022'):
     with open(file_path, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
     pass
-
-#def save2df(year='2022'):
-#    df = list2df(year)
-#    df['year'] = year
-#    df.to_parquet('~/data/api/year.parquet' , partition_cols=['year'])
-#    
-#    return df
 
