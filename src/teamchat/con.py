@@ -1,13 +1,12 @@
 from kafka import KafkaConsumer, TopicPartition
 import os
 from json import loads, dumps, load
+import glob
 
-
-#경로저장
+# 경로 저장
 home_path = os.path.expanduser("~")
-FILE_PATH=f'{home_path}/data/movies/year=2021/data.json'
+FILE_PATH = os.path.join(home_path, 'data', 'mov_data', '*_data.json')
 MOVIE_INFO = os.path.join(home_path, 'movie_info.json')
-
 
 #검색한 영화 정보 저장
 def save_movie_info(value):
@@ -15,15 +14,18 @@ def save_movie_info(value):
         f.write(dumps(value, ensure_ascii=False, indent=4))
 
 
-#저장된 영화데이터(JSON파일) 읽기
+# 저장된 영화데이터(JSON파일) 읽기
 def read_json():
-    if os.path.exists(FILE_PATH):
-        with open(FILE_PATH, 'r', encoding='utf-8') as f:
+    all_data = []
+    # 모든 *_data.json 파일 경로를 찾기
+    file_paths = glob.glob(FILE_PATH)
+    
+    for file_path in file_paths:
+        with open(file_path, 'r', encoding='utf-8') as f:
             data = load(f)  # 파일 객체를 사용하여 JSON을 로드
-            return data
+            all_data.extend(data)  # 모든 데이터를 리스트에 추가
 
-    return None
-
+    return all_data
 
 #Consumer 설정
 consumer = KafkaConsumer(
@@ -31,7 +33,7 @@ consumer = KafkaConsumer(
         bootstrap_servers=['localhost:9092'],
         value_deserializer=lambda x: loads(x.decode('utf-8')),
         consumer_timeout_ms=10000,
-        auto_offset_reset='earliest',
+        auto_offset_reset='latest',
         group_id="movie_data",
         enable_auto_commit=False,
 )
@@ -44,7 +46,6 @@ data = read_json()
 
 for i in data:
     movie_dic[i["movieNm"]] = i
-
 
 #Consumer 실행
 try:
@@ -70,3 +71,4 @@ except KeyboardInterrupt:
 
 finally:
     consumer.close()
+
