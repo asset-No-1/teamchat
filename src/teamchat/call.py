@@ -31,7 +31,7 @@ def list2df(year='2022'):
 
     return l
 
-def save_json(data, year='2022'):
+def save_json(data, file_path):
     data = list2df(year='2022')
     home_path = os.path.expanduser("~")
     file_path = f"{home_path}/data/mov_data/year={year}/data.json"
