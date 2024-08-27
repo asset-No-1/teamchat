@@ -6,7 +6,7 @@ import os
 #PRODUCER 설정
 def pro_chat(username):
     producer = KafkaProducer(
-        bootstrap_servers=['localhost:9092'],
+        bootstrap_servers=['ec2-43-203-210-250.ap-northeast-2.compute.amazonaws.com:9092'],
         value_serializer=lambda x: dumps(x, ensure_ascii=False).encode('utf-8'),
     )
 
@@ -29,7 +29,7 @@ def pro_chat(username):
 def con_chat(username):
     consumer = KafkaConsumer(
         "chat",
-        bootstrap_servers=['localhost:9092'],
+        bootstrap_servers=['ec2-43-203-210-250.ap-northeast-2.compute.amazonaws.com:9092'],
         enable_auto_commit=True,
         value_deserializer=lambda x: loads(x.decode('utf-8'))
     )
