@@ -5,3 +5,5 @@ __pycache__
 airflow.db
 *.swp
 *.b
+*.json
+build/
