@@ -2,19 +2,31 @@ from kafka import KafkaProducer, KafkaConsumer
 from json import loads, dumps, load, JSONDecodeError
 import threading
 import os
-
+import curses
 
 #PRODUCER 설정
-def pro_chat(username):
+def pro_chat(username, stdscr):
     producer = KafkaProducer(
         bootstrap_servers=['ec2-43-203-210-250.ap-northeast-2.compute.amazonaws.com:9092'],
         value_serializer=lambda x: dumps(x, ensure_ascii=False).encode('utf-8'),
     )
     
+    input_win = curses.newwin(1, curses.COLS - 1, curses.LINES - 1, 0)
+    # 새 창 생성 (height = 창 높이 1줄 , width = 오른쪽에 한칸 여백, starty = 가장 아래쪽, startx = 왼쪽 가장자리)
+    input_win.refresh()
+    # 키패드 모드를 활성화. 함수 키(F1, F2 등)와 화살표 키 같은 특수 키들이 올바르게 해석되고, 해당 키의 코드값이 반환
 
     while True:
-        data = input(f'{username}: ')
+        input_win.clear()
+        # 창의 내용을 지움
+        input_win.addstr(0, 0, f"{username}: ")
+        # (y, x) 위치에 username 추가
+        input_win.refresh()
+        # 창의 내용 화면에 즉시 반영
+        curses.echo()  # 입력된 내용을 실시간으로 표시
+        data = input_win.getstr().decode('utf-8', errors='ignore')
         
+
         if data == 'exit':
             # exit 메시지를 전송하여 컨슈머에게 종료 신호를 보냄
             message = {'user': username, 'message': 'exit'}
@@ -28,17 +40,25 @@ def pro_chat(username):
             producer.send('chat', value=message)
             producer.flush()
     
-    print("채팅 종료")
+    # 채팅 종료 메시지를 화면에 출력
+    # stdscr = 가상 디폴트 윈도우(표준화면)
+    stdscr.addstr(curses.LINES - 1, 0, "채팅 종료, 아무 키나 눌러주세요")
+    stdscr.refresh()
+    stdscr.getch()  # 아무 키 입력 후 종료됨
 
 
 #CONSUMER 설정
-def con_chat(username):
+def con_chat(username, stdscr):
     consumer = KafkaConsumer(
         "chat",
         bootstrap_servers=['ec2-43-203-210-250.ap-northeast-2.compute.amazonaws.com:9092'],
         enable_auto_commit=True,
         value_deserializer=lambda x: loads(x.decode('utf-8'))
     )
+
+
+    message_win = curses.newwin(curses.LINES - 2, curses.COLS, 0, 0)
+    message_win.scrollok(True)
 
     try:
         for m in consumer:
@@ -49,36 +69,48 @@ def con_chat(username):
 
             # 수신한 메시지에서 사용자 이름과 메시지를 출력합니다.
             if message['user'] != username:
-                print(f"{message['user']}: {message['message']}")
-
+                message_win.addstr(f"{message['user']}: {message['message']}\n")
+                message_win.refresh()
+            else:
+                message_win.addstr(f"나: {message['message']}\n")
+                message_win.refresh()
             #if message['user'] != username:
             #  print(f"{message['user']}: {message['message']}")
              #   print(f"나: {message['message']}\n")
             
             
     except KeyboardInterrupt:
-        print("Consumer 종료")
+        stdscr.addstr(curses.LINES - 1, 0, "Consumer 종료")
+        stdscr.refresh()
+        stdscr.getch()  # 사용자 입력을 대기하여 화면이 유지되도록 함
 
-    except JSONDecodeError as e:
-        print(f"JSON Decode Error: {e}")
-        print(f"Raw message: {message}")
+    #except JSONDecodeError as e:
+     #   print(f"JSON Decode Error: {e}")
+      #  print(f"Raw message: {message}")
 
-    except TypeError as e:
-        print(f"TypeError: {e}")
-        print(f"Raw message: {message}")
+    #except TypeError as e:
+     #   print(f"TypeError: {e}")
+      #  print(f"Raw message: {message}")
 
     finally:
         consumer.close()
 
-# 각 사용자 이름을 입력받아 PRODUCER와 CONSUMER 실행
 username = input("이름: ")
 
-thread_1 = threading.Thread(target = pro_chat, args = (username,))
-thread_2 = threading.Thread(target = con_chat, args = (username,))
+def main(stdscr):
 
-thread_1.start()
-thread_2.start()
+    stdscr.clear()
+    stdscr.addstr(1, 0, f"아무 키나 눌러 채팅을 시작해주세요.")
+    stdscr.refresh()
+    stdscr.getch()  # 사용자가 아무 키나 눌러야 시작
 
+    pro_thread = threading.Thread(target = pro_chat, args = (username, stdscr))
+    con_thread = threading.Thread(target = con_chat, args = (username, stdscr))
 
-thread_1.join()
-thread_2.join()
+    pro_thread.start()
+    con_thread.start()
+
+    pro_thread.join()
+    con_thread.join()
+if __name__ == "__main__": # 
+    curses.wrapper(main) # curses 환경을 설정하고 'main' 함수 호출
