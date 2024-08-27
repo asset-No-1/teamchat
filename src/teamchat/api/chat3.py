@@ -3,6 +3,11 @@ from json import loads, dumps, load, JSONDecodeError
 import threading
 import os
 import curses
+import glob
+
+# 경로 저장
+home_path = os.path.expanduser("~")
+FILE_PATH = os.path.join(home_path, 'data', 'mov_data', '*_data.json')
 
 #PRODUCER 설정
 def pro_chat(username, stdscr):
@@ -47,6 +52,27 @@ def pro_chat(username, stdscr):
     stdscr.getch()  # 아무 키 입력 후 종료됨
 
 
+# 저장된 영화데이터(JSON파일) 읽기
+def read_json():
+    all_data = []
+    # 모든 *_data.json 파일 경로를 찾기
+    file_paths = glob.glob(FILE_PATH)
+
+    for file_path in file_paths:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            data = load(f)  # 파일 객체를 사용하여 JSON을 로드
+            all_data.extend(data)  # 모든 데이터를 리스트에 추가
+
+    return all_data
+
+#키값을 영화제목을 주기위해 데이터를 담을 빈 딕셔너리 생성
+movie_dic = {}
+data = read_json()
+
+for i in data:
+    movie_dic[i["movieNm"]] = i
+
+
 #CONSUMER 설정
 def con_chat(username, stdscr):
     consumer = KafkaConsumer(
@@ -70,15 +96,17 @@ def con_chat(username, stdscr):
             # 수신한 메시지에서 사용자 이름과 메시지를 출력합니다.
             if message['user'] != username:
                 message_win.addstr(f"{message['user']}: {message['message']}\n")
-                message_win.refresh()
+                #message_win.refresh()
+           
             else:
-                message_win.addstr(f"나: {message['message']}\n")
-                message_win.refresh()
-            #if message['user'] != username:
-            #  print(f"{message['user']}: {message['message']}")
-             #   print(f"나: {message['message']}\n")
+                if message['message'] in movie_dic:
+                    value = movie_dic[message['message']]
+                    message_win.addstr(f"나: {message['message']} - {value}\n")
+                else:
+                    message_win.addstr(f"나: {message['message']}\n")
+            message_win.refresh()
             
-            
+
     except KeyboardInterrupt:
         stdscr.addstr(curses.LINES - 1, 0, "Consumer 종료")
         stdscr.refresh()
