@@ -14,8 +14,8 @@ def create_data(username, message, end):
 # SENDER: 사용자 입력을 Kafka로 전송
 def pchat(stdscr, chatroom, username):
     producer = KafkaProducer(
-        bootstrap_servers=['ec2-43-203-210-250.ap-northeast-2.compute.amazonaws.com:9092'],
-        #bootstrap_servers=['172.17.0.1:9092'],
+        #bootstrap_servers=['ec2-43-203-210-250.ap-northeast-2.compute.amazonaws.com:9092'],
+        bootstrap_servers=['172.17.0.1:9092'],
         value_serializer=lambda x: dumps(x, ensure_ascii=False).encode('utf-8'),
     )
 
@@ -38,7 +38,7 @@ def pchat(stdscr, chatroom, username):
             input_win.clear()
             input_win.addstr(0, 0, f"{username}: ")
             curses.echo()
-            message = input_win.getstr().decode('utf-8')
+            message = input_win.getstr().decode('utf-8', errors='ignore')
             #curses.noecho()
 
             if message == 'exit':
@@ -63,13 +63,21 @@ def pchat(stdscr, chatroom, username):
 def cchat(stdscr, chatroom, username):
     consumer = KafkaConsumer(
         chatroom,
-        bootstrap_servers=['ec2-43-203-210-250.ap-northeast-2.compute.amazonaws.com:9092'],
-        #bootstrap_servers=['172.17.0.1:9092'],
+        #bootstrap_servers=['ec2-43-203-210-250.ap-northeast-2.compute.amazonaws.com:9092'],
+        bootstrap_servers=['172.17.0.1:9092'],
         enable_auto_commit=True,
         value_deserializer=lambda x: loads(x.decode('utf-8'))
     )
 
-    file_path = f"{chatroom}_messages.json"
+    #file_path = f"{chatroom}_messages.json"
+    # 파일 경로 설정
+    directory = os.path.expanduser('~/code/teamchat/logs/')
+    filename = f"{chatroom}_messages.json"
+    file_path = os.path.join(directory, filename)
+
+    # 디렉토리가 존재하지 않으면 생성
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
     if os.path.exists(file_path):
         with open(file_path, "r", encoding="utf-8") as f:
