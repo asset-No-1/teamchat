@@ -2,7 +2,9 @@ from kafka import KafkaProducer, KafkaConsumer
 from json import loads, dumps, load, JSONDecodeError
 import threading
 import os
+import sys
 
+stop_event = threading.Event()
 
 #PRODUCER 설정
 def pro_chat(username):
@@ -11,15 +13,19 @@ def pro_chat(username):
         value_serializer=lambda x: dumps(x, ensure_ascii=False).encode('utf-8'),
     )
     
-
-    while True:
-        data = input(f'{username}: ')
+    while not stop_event.is_set():
+    #while True:
+        # 입력을 기다리지 않고 비동기적으로 처리
+        print(f'{username}: ', end='', flush=True)
+        data = input()
+        #data = input(f'{username}: ')
         
         if data == 'exit':
             # exit 메시지를 전송하여 컨슈머에게 종료 신호를 보냄
             message = {'user': username, 'message': 'exit'}
             producer.send('chat', value=message)
             producer.flush()
+            stop_event.set()  # 종료 신호 보내기
             break
 
         else:
@@ -39,36 +45,36 @@ def con_chat(username):
         enable_auto_commit=True,
         value_deserializer=lambda x: loads(x.decode('utf-8'))
     )
+    while not stop_event.is_set():
+        try:
+            for m in consumer:
+                message = m.value
 
-    try:
-        for m in consumer:
-            message = m.value
+                if message['message'] == 'exit':
+                    break
 
-            if message['message'] == 'exit':
-                break
+                # 수신한 메시지에서 사용자 이름과 메시지를 출력합니다.
+                if message['user'] != username:
+                    sys.stdout.write(f"\r{message['user']}: {message['message']}\n")
+                    sys.stdout.write(f'{username}: ')  # 입력 프롬프트 복원
+                    sys.stdout.flush()
 
-            # 수신한 메시지에서 사용자 이름과 메시지를 출력합니다.
-            if message['user'] != username:
-                print(f"{message['user']}: {message['message']}")
+                    #print(f"\r{message['user']}: {message['message']}")
+                    #print(f"{username}: ", end='', flush=True)
+                        
+        except KeyboardInterrupt:
+            print("Consumer 종료")
 
-            #if message['user'] != username:
-            #  print(f"{message['user']}: {message['message']}")
-             #   print(f"나: {message['message']}\n")
-            
-            
-    except KeyboardInterrupt:
-        print("Consumer 종료")
+        except JSONDecodeError as e:
+            print(f"JSON Decode Error: {e}")
+            print(f"Raw message: {message}")
 
-    except JSONDecodeError as e:
-        print(f"JSON Decode Error: {e}")
-        print(f"Raw message: {message}")
+        except TypeError as e:
+            print(f"TypeError: {e}")
+            print(f"Raw message: {message}")
 
-    except TypeError as e:
-        print(f"TypeError: {e}")
-        print(f"Raw message: {message}")
-
-    finally:
-        consumer.close()
+        #finally:
+    consumer.close()
 
 # 각 사용자 이름을 입력받아 PRODUCER와 CONSUMER 실행
 username = input("이름: ")
