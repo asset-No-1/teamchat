@@ -4,10 +4,15 @@ import threading
 import os
 import curses
 import glob
+import time
 
 # 경로 저장
 home_path = os.path.expanduser("~")
 FILE_PATH = os.path.join(home_path, 'data', 'mov_data', '*_data.json')
+
+# 시간 함수
+def local_time():
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
 #PRODUCER 설정
 def pro_chat(username, stdscr):
@@ -19,7 +24,6 @@ def pro_chat(username, stdscr):
     input_win = curses.newwin(1, curses.COLS - 1, curses.LINES - 1, 0)
     # 새 창 생성 (height = 창 높이 1줄 , width = 오른쪽에 한칸 여백, starty = 가장 아래쪽, startx = 왼쪽 가장자리)
     input_win.refresh()
-    # 키패드 모드를 활성화. 함수 키(F1, F2 등)와 화살표 키 같은 특수 키들이 올바르게 해석되고, 해당 키의 코드값이 반환
 
     while True:
         input_win.clear()
@@ -34,14 +38,14 @@ def pro_chat(username, stdscr):
 
         if data == 'exit':
             # exit 메시지를 전송하여 컨슈머에게 종료 신호를 보냄
-            message = {'user': username, 'message': 'exit'}
+            message = {'user': username, 'message': 'exit', 'time': local_time()}
             producer.send('chat', value=message)
             producer.flush()
             break
 
         else:
-            # 메시지를 JSON으로 보내면서 사용자 이름을 포함시킵니다.
-            message = {'user': username, 'message': data}
+            # 메시지를 JSON으로 보내면서 사용자 이름을 포함하고, local time을 표시.
+            message = {'user': username, 'message': data, 'time': local_time()}
             producer.send('chat', value=message)
             producer.flush()
     
@@ -92,11 +96,15 @@ def con_chat(username, stdscr):
 
             if message['message'] == 'exit':
                 break
+            # 시간 출력
+            timestamp = message.get('time', '')
+            message_time = f"{message['user']}: {message['message']}  {timestamp}\n"
 
             # 상대방이 보낸 메시지에서 '@'로 시작하지 않는 경우만 출력
             if message['user'] != username:
                 if not message['message'].startswith('@'):
-                    message_win.addstr(f"{message['user']}: {message['message']}\n")
+                    message_win.addstr(message_time)
+                    #message_win.addstr(f"{message['user']}: {message['message']} {[timestamp]}\n")
             
             else:
                 # 자신이 보낸 메시지가 '@'로 시작하는 경우
@@ -107,12 +115,12 @@ def con_chat(username, stdscr):
 
                     if movie_title in movie_dic:
                         value = movie_dic[movie_title]
-                        message_win.addstr(f"나: {message['message']} - {value}\n")
+                        message_win.addstr(f"사용자: {message['message']} - {value}\n {timestamp}\n")
                     else:
-                        message_win.addstr(f"나: {message['message']}\n")
+                        message_win.addstr(f"사용자: {message['message']}  {timestamp}\n")
                 else:
                     # 일반 메시지 출력
-                    message_win.addstr(f"나: {message['message']}\n")
+                    message_win.addstr(f"사용자: {message['message']}  {timestamp}\n")
 
             message_win.refresh()
         
@@ -134,6 +142,7 @@ def con_chat(username, stdscr):
         consumer.close()
 
 username = input("이름: ")
+#topic = input("방 이름: ")
 
 def main(stdscr):
 
@@ -141,6 +150,8 @@ def main(stdscr):
     stdscr.addstr(1, 0, f"아무 키나 눌러 채팅을 시작해주세요.")
     stdscr.refresh()
     stdscr.getch()  # 사용자가 아무 키나 눌러야 시작
+    stdscr.clear()
+    stdscr.refresh()
 
     pro_thread = threading.Thread(target = pro_chat, args = (username, stdscr))
     con_thread = threading.Thread(target = con_chat, args = (username, stdscr))
