@@ -77,7 +77,7 @@ Topic 기반 메시지 전송: 메시지는 특정 Kafka 토픽(Product)을 통�
 이 DAG(DAG: Directed Acyclic Graph)는 영화 데이터를 JSON 파일로 저장하고, 해당 데이터의 처리 결과에 따라 성공 또는 실패 알림을 전송하는 일련의 작업을 자동화합니다.
 
 
-데이터 파이프라인
+#### 데이터 파이프라인
 <img width="1086" alt="스크린샷 2024-08-28 16 30 37" src="https://github.com/user-attachments/assets/42db2ac6-1ade-4ff3-9017-e9e111798c43">
 
 
