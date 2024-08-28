@@ -39,14 +39,14 @@ def pro_chat(username, stdscr):
         if data == 'exit':
             # exit 메시지를 전송하여 컨슈머에게 종료 신호를 보냄
             message = {'user': username, 'message': 'exit', 'time': local_time()}
-            producer.send('chat', value=message)
+            producer.send('Product', value=message)
             producer.flush()
             break
 
         else:
             # 메시지를 JSON으로 보내면서 사용자 이름을 포함하고, local time을 표시.
             message = {'user': username, 'message': data, 'time': local_time()}
-            producer.send('chat', value=message)
+            producer.send('Product', value=message)
             producer.flush()
     
     # 채팅 종료 메시지를 화면에 출력
@@ -80,7 +80,7 @@ for i in data:
 #CONSUMER 설정
 def con_chat(username, stdscr):
     consumer = KafkaConsumer(
-        "chat",
+        "Product",
         bootstrap_servers=['ec2-43-203-210-250.ap-northeast-2.compute.amazonaws.com:9092'],
         enable_auto_commit=True,
         value_deserializer=lambda x: loads(x.decode('utf-8'))
