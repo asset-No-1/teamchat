@@ -41,6 +41,7 @@ def pro_chat(username, stdscr):
             message = {'user': username, 'message': 'exit', 'time': local_time()}
             producer.send('Product', value=message)
             producer.flush()
+            stdscr.refresh()
             break
 
         else:
@@ -48,7 +49,7 @@ def pro_chat(username, stdscr):
             message = {'user': username, 'message': data, 'time': local_time()}
             producer.send('Product', value=message)
             producer.flush()
-    
+            stdscr.refresh()
     # 채팅 종료 메시지를 화면에 출력
     # stdscr = 가상 디폴트 윈도우(표준화면)
     stdscr.addstr(curses.LINES - 1, 0, "채팅 종료, 아무 키나 눌러주세요")
@@ -104,6 +105,7 @@ def con_chat(username, stdscr):
             if message['user'] != username:
                 if not message['message'].startswith('@'):
                     message_win.addstr(message_time)
+                    message_win.refresh()
                     #message_win.addstr(f"{message['user']}: {message['message']} {[timestamp]}\n")
             
             else:
@@ -123,15 +125,17 @@ def con_chat(username, stdscr):
                     #if movie_title in movie_dic:
                         #value = movie_dic[movie_title]
                         message_win.addstr(f"사용자: {message['message']} - {value}\n {timestamp}\n")
+                        message_win.refresh()
                     elif not matched_title:
                         message_win.addstr(f"사용자: 영화 정보를 찾을 수 없습니다. {timestamp}\n")
+                        message_win.refresh()
                     else:
                         message_win.addstr(f"사용자: {message['message']}  {timestamp}\n")
+                        message_win.refresh()
                 else:
                     # 일반 메시지 출력
                     message_win.addstr(f"사용자: {message['message']}  {timestamp}\n")
-
-            message_win.refresh()
+                    message_win.refresh()
         
     
     except KeyboardInterrupt:
