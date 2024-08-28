@@ -93,19 +93,30 @@ def con_chat(username, stdscr):
             if message['message'] == 'exit':
                 break
 
-            # 수신한 메시지에서 사용자 이름과 메시지를 출력합니다.
+            # 상대방이 보낸 메시지에서 '@'로 시작하지 않는 경우만 출력
             if message['user'] != username:
-                message_win.addstr(f"{message['user']}: {message['message']}\n")
-           
-            else:
-                if message['message'] in movie_dic:
-                    value = movie_dic[message['message']]
-                    message_win.addstr(f"나: {message['message']} - {value}\n")
-                else:
-                    message_win.addstr(f"나: {message['message']}\n")
-            message_win.refresh()
+                if not message['message'].startswith('@'):
+                    message_win.addstr(f"{message['user']}: {message['message']}\n")
             
+            else:
+                # 자신이 보낸 메시지가 '@'로 시작하는 경우
+                if message['message'].startswith('@'):
 
+                    # '@' 뒤에 있는 영화 제목을 추출
+                    movie_title = message['message'][1:].strip()
+
+                    if movie_title in movie_dic:
+                        value = movie_dic[movie_title]
+                        message_win.addstr(f"나: {message['message']} - {value}\n")
+                    else:
+                        message_win.addstr(f"나: {message['message']}\n")
+                else:
+                    # 일반 메시지 출력
+                    message_win.addstr(f"나: {message['message']}\n")
+
+            message_win.refresh()
+        
+    
     except KeyboardInterrupt:
         stdscr.addstr(curses.LINES - 1, 0, "Consumer 종료")
         stdscr.refresh()
