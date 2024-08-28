@@ -1,6 +1,9 @@
 # 사내채팅 애플리케이션
 <img src="https://img.shields.io/badge/Python-3.8-3776AB?style=flat&logo=Python&logoColor=F5F7F8"/>
-
+<img src="https://img.shields.io/badge/Spark-3.5.1-E25A1C?style=flat&logo=apachespark&logoColor=F5F7F8"/>
+<img src="https://img.shields.io/badge/Zeppelin-0.11.1-20A6C9?style=flat&logo=apachesuperset&logoColor=F5F7F8"/>
+<img src="https://img.shields.io/badge/Airflow-2.7.0-017CEE?style=flat&logo=apacheairflow&logoColor=F5F7F8"/>
+<img src="https://img.shields.io/badge/Kafka-3.8.0-231F20?style=flat&logo=apachekafka&logoColor=F5F7F8"/>
 
 ## 목차
 - [프로젝트 개요](#프로젝트-개요)
