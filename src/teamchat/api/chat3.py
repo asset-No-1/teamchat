@@ -96,7 +96,6 @@ def con_chat(username, stdscr):
             # 수신한 메시지에서 사용자 이름과 메시지를 출력합니다.
             if message['user'] != username:
                 message_win.addstr(f"{message['user']}: {message['message']}\n")
-                #message_win.refresh()
            
             else:
                 if message['message'] in movie_dic:
