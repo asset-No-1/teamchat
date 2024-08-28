@@ -83,7 +83,9 @@ def con_chat(username, stdscr):
         "Product",
         bootstrap_servers=['ec2-43-203-210-250.ap-northeast-2.compute.amazonaws.com:9092'],
         enable_auto_commit=True,
-        value_deserializer=lambda x: loads(x.decode('utf-8'))
+        #group_id=f"group_{username}",
+        value_deserializer=lambda x: loads(x.decode('utf-8')),
+        #auto_offset_reset='latest',
     )
 
 
@@ -93,8 +95,7 @@ def con_chat(username, stdscr):
     try:
         for m in consumer:
             message = m.value
-
-            if message['message'] == 'exit':
+            if message['message'] == 'exit' and message['user'] == username:
                 break
             # 시간 출력
             timestamp = message.get('time', '')
@@ -147,8 +148,6 @@ def con_chat(username, stdscr):
      #   print(f"TypeError: {e}")
       #  print(f"Raw message: {message}")
 
-    finally:
-        consumer.close()
 
 username = input("이름: ")
 #topic = input("방 이름: ")
