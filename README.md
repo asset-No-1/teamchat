@@ -84,6 +84,7 @@ bin/kafka-server-start.sh -daemon config/server.properties
 ```bash
 vi src/teamchat/api/chat3.py
 ```
+
 ```python
 bootstrap_servers=[서버주소 입력:9092']
 ```
