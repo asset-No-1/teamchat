@@ -79,6 +79,7 @@ bin/zookeeper-server-start.sh -daemon config/zookeeper.properties
 2. Kafka 실행
 ```bash
 bin/kafka-server-start.sh -daemon config/server.properties
+```
 
 - 실행파일에서 서버주소를 수정합니다:
 ```bash
