@@ -111,11 +111,20 @@ def con_chat(username, stdscr):
                 if message['message'].startswith('@'):
 
                     # '@' 뒤에 있는 영화 제목을 추출
-                    movie_title = message['message'][1:].strip()
-
-                    if movie_title in movie_dic:
-                        value = movie_dic[movie_title]
+                    #movie_title = message['message'][1:].strip()
+                    movie_title = message['message'][1:].strip().replace(" ","")
+                    matched_title = None
+                    for title in movie_dic:
+                        if title.replace(" ", "") == movie_title:
+                            matched_title = title
+                            break
+                    if matched_title:
+                        value = movie_dic[matched_title]
+                    #if movie_title in movie_dic:
+                        #value = movie_dic[movie_title]
                         message_win.addstr(f"사용자: {message['message']} - {value}\n {timestamp}\n")
+                    elif not matched_title:
+                        message_win.addstr(f"사용자: 영화 정보를 찾을 수 없습니다. {timestamp}\n")
                     else:
                         message_win.addstr(f"사용자: {message['message']}  {timestamp}\n")
                 else:
@@ -161,5 +170,6 @@ def main(stdscr):
 
     pro_thread.join()
     con_thread.join()
-if __name__ == "__main__": # 
-    curses.wrapper(main) # curses 환경을 설정하고 'main' 함수 호출
+#if __name__ == "__main__": # 
+
+curses.wrapper(main) # curses 환경을 설정하고 'main' 함수 호출
