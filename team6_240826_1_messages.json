@@ -1,0 +1,187 @@
+[
+    {
+        "sender": "dohyun",
+        "message": "come in!",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "User [dohyun_copy] has entered the chat!",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "it works!",
+        "end": false
+    },
+    {
+        "sender": "youngin",
+        "message": "User [youngin] has entered the chat!",
+        "end": false
+    },
+    {
+        "sender": "youngin",
+        "message": "hi",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "hi",
+        "end": false
+    },
+    {
+        "sender": "youngin",
+        "message": "hello",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "loo=l",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "lol",
+        "end": false
+    },
+    {
+        "sender": "youngin",
+        "message": "lol",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "it works!",
+        "end": false
+    },
+    {
+        "sender": "youngin",
+        "message": "yes",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "\uc798 \ub418\ub124",
+        "end": false
+    },
+    {
+        "sender": "youngin",
+        "message": "\uc624",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "\uc5b4\uca0c\ub4e0 \ub418\ub124\uc694",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "\u3147\u3139\u3147",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "\u3147",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "\u3147",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "\u3147",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "\u3147",
+        "end": false
+    },
+    {
+        "sender": "youngin",
+        "message": "\uc544\udcec\udceb\udca7\ub9d0 \ub04a\uae30\udceb\udca7\ub9d0\ud558\ub294 \ub3c4\uc911\uc5d0 ",
+        "end": false
+    },
+    {
+        "sender": "youngin",
+        "message": "\uc5b4\udce3exit",
+        "end": false
+    },
+    {
+        "sender": "youngin",
+        "message": "User [youngin] has exited the chatroom.",
+        "end": true
+    },
+    {
+        "sender": "dohyun",
+        "message": "hello",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "what?",
+        "end": false
+    },
+    {
+        "sender": "dohyun",
+        "message": "lol",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "\udcec\udc96type somthing",
+        "end": false
+    },
+    {
+        "sender": "dohyun",
+        "message": "\udce3lol",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "\udcec\ub9d0\uc744 \uce58\uace0 \uc788\uc5b4\ub294\ub370 ",
+        "end": false
+    },
+    {
+        "sender": "dohyun",
+        "message": "\u3163\udce3lol",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "\udce3\udc84\ub2e4\uc2dc \uce58\u3161\ub294 \ub290\ub08c",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "\ub7ec\u314f\u3163\u3147;",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "\u314a\udce3zz",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "\u3163\u3150",
+        "end": false
+    },
+    {
+        "sender": "dohyun_copy",
+        "message": "User [dohyun_copy] has exited the chatroom.",
+        "end": true
+    },
+    {
+        "sender": "dohyun",
+        "message": "\udceb\udc8bexit",
+        "end": false
+    },
+    {
+        "sender": "dohyun",
+        "message": "User [dohyun] has exited the chatroom.",
+        "end": true
+    }
+]

@@ -1,0 +1,87 @@
+[
+    {
+        "sender": "user1",
+        "message": "\uc548\ub155",
+        "end": false
+    },
+    {
+        "sender": "user1",
+        "message": "\u314b\u314b",
+        "end": false
+    },
+    {
+        "sender": "user1",
+        "message": "hello",
+        "end": false
+    },
+    {
+        "sender": "user1",
+        "message": "123",
+        "end": false
+    },
+    {
+        "sender": "user3",
+        "message": "User [user3] has entered the chat!",
+        "end": false
+    },
+    {
+        "sender": "user3",
+        "message": "\udce3\udc85hello",
+        "end": false
+    },
+    {
+        "sender": "user3",
+        "message": "12",
+        "end": false
+    },
+    {
+        "sender": "user3",
+        "message": "helloddd",
+        "end": false
+    },
+    {
+        "sender": "user3",
+        "message": "\u314b\u314b\u314b",
+        "end": false
+    },
+    {
+        "sender": "user3",
+        "message": "User [user3] has exited the chatroom.",
+        "end": true
+    },
+    {
+        "sender": "user1",
+        "message": "User [user1] has exited the chatroom.",
+        "end": true
+    },
+    {
+        "sender": "dohyun",
+        "message": "adddd",
+        "end": false
+    },
+    {
+        "sender": "dohyun",
+        "message": "\u314b\u314b\u314b",
+        "end": false
+    },
+    {
+        "sender": "dohyun",
+        "message": "123",
+        "end": false
+    },
+    {
+        "sender": "dohyun",
+        "message": "tkdkd",
+        "end": false
+    },
+    {
+        "sender": "dohyun",
+        "message": "quit",
+        "end": false
+    },
+    {
+        "sender": "dohyun",
+        "message": "User [dohyun] has exited the chatroom.",
+        "end": true
+    }
+]
