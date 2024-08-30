@@ -7,4 +7,9 @@ src/teamchat.egg-info/dependency_links.txt
 src/teamchat.egg-info/requires.txt
 src/teamchat.egg-info/top_level.txt
 src/teamchat/api/call.py
+src/teamchat/api/chat.py
+src/teamchat/api/chat3.py
+src/teamchat/py/get_json.py
+src/teamchat/py/notify.py
+src/teamchat/py/process.py
 tests/test_call.py
