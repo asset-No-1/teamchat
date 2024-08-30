@@ -36,7 +36,7 @@ saved_offset = read_offset()
 
 # kafka consumer initialize
 consumer = KafkaConsumer(
-        bootstrap_servers=['ec2-43-203-210-250.ap-northeast-2.compute.amazonaws.com:9092'],
+        bootstrap_servers=['localhost:9092'],
         value_deserializer=lambda x: loads(x.decode('utf-8')),
         consumer_timeout_ms=5000,
         #auto_offset_reset="earliest" # offset이 지정되어 있지 않을때 사용
