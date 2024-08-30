@@ -1,6 +1,6 @@
 [project]
 name = "teamchat"
-version = "0.1.0"
+version = "0.2.0"
 description = "Default template for PDM package"
 authors = [
     {name = "Nicou11", email = "lyoungin1204@gmail.com"},
@@ -17,7 +17,7 @@ license = {text = "MIT"}
 
 
 [tool.pdm]
-distribution = false
+distribution = true
 
 [tool.pdm.dev-dependencies]
 test = [
